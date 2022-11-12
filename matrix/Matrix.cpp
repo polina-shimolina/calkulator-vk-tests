@@ -356,3 +356,7 @@ else {
     return {A, columns, columns};
 }
 }
+
+Matrix& operator+=(Matrix& m1, const Matrix& m2) {
+    return m1 = m1 + m2;
+}
