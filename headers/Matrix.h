@@ -24,6 +24,7 @@ class Matrix {
     friend Matrix operator + (const Vector& v, const Matrix& m);
     friend Matrix operator - (const Matrix& m, const Vector& v);
     friend Matrix operator - (const Matrix& m, const float& f);
+    friend Matrix& operator+=(Matrix& m1, const Matrix& m2);
 private:
     size_t lines, columns;
     float** array{};
