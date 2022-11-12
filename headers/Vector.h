@@ -14,6 +14,7 @@ class Vector {
     friend Vector operator + (const float& f, const Vector& v);
     friend Vector operator + (const Vector& v1, const Vector& v2);
     friend Vector operator - (const Vector& v, const float& f);
+    friend Vector& operator+=(Vector& v1, const Vector& v2);
 private:
     float* array;
     size_t N;
