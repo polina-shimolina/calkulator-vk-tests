@@ -3,11 +3,13 @@ project(matrix_calculator)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(matrix_calculator main.cpp vector.cpp vector.h matrix.cpp matrix.h Google_tests/test.cpp)
-add_subdirectory(Google_tests)
+cmake_minimum_required(VERSION 3.23)
+project(untitled)
 
-enable_testing()
+set(CMAKE_CXX_STANDARD 14)
 
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
-target_link_libraries(matrix_calculator ${GTEST_LIBRARIES} pthread)
+add_subdirectory(lib)
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+
+add_executable(untitled main.cpp Matrix.cpp Matrix.h Vector.cpp Vector.h Google_Tests_run test.cpp)
+target_link_libraries(Google_Tests_run gtest gtest_main)
