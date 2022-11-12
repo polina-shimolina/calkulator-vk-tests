@@ -5,11 +5,11 @@
 #include "vector.h"
 #include <iostream>
 
-vector::vector() {
-    N = 0; c = NULL; array = nullptr;
-}
+#include "Vector.h"
 
-vector::vector(float* _array, int _N, int _c) {
+Vector::Vector() :N(0), c(false), array(nullptr) {}
+
+Vector::Vector(const float* _array, size_t _N, bool _c) {
     N = _N;
     c = _c;
     array = new float[N];
@@ -18,16 +18,16 @@ vector::vector(float* _array, int _N, int _c) {
     }
 }
 
-vector::vector(int _n, int _c) {
+Vector::Vector(size_t _n, bool _c) {
     N = _n, c = _c;
     array = new float[N];
 }
 
-vector::~vector() {
+Vector::~Vector() {
     delete[] array;
 }
 
-float* vector::get_array() {
+float* Vector::get_array() {
     float* temp = new float[N];
     for (int i = 0; i < N; i++) {
         temp[i] = array[i];
@@ -35,79 +35,64 @@ float* vector::get_array() {
     return temp;
 }
 
-int vector::get_N() {
-    return N;
-}
 
-int vector::get_C()
-{
+bool Vector::get_C() const {
     return c;
 }
-//
-//float vector::get_element(int pos) {
-//	return array[pos];
-//}
 
-std::ostream& operator << (std::ostream& s, const vector& v) {
+std::ostream& operator << (std::ostream& s, const Vector& v) {
     for (int i = 0; i < v.N; i++)
         s << v.array[i] << " ";
     return s;
 }
 
-int vector::get_size() {
+size_t Vector::get_size() const {
     return N;
 }
 
-vector vector::operator = (float* mas)
-{
+Vector& Vector::operator = (const float* mas) {
     int l = sizeof(mas) / sizeof(mas[0]);
     this->array = new float[l];
     for (int i = 0; i < l; i++) {
         this->array[i] = mas[i];
     }
     this->N = l;
-    this->c = 1;
-    return vector(this->array, this->N, this->c);
+    this->c = true;
+    return *this;
 }
 
-float vector::operator[](int n)
-{
+float& Vector::operator[](size_t n) const {
     return array[n];
 }
 
-vector operator + (const vector& v, const float& f) {
-    vector res(v.N, v.c);
+Vector operator + (const Vector& v, const float& f) {
+    Vector res(v.N, v.c);
     for (int i = 0; i < v.N; i++) {
         res.array[i] = v.array[i] + f;
     }
     return res;
 }
 
-vector operator + (const float& f, const vector& v) {
+Vector operator + (const float& f, const Vector& v) {
     return v + f;
 }
 
-vector operator + (const vector& v1, const vector& v2)
-{
-    vector res;
-    if (v1.c == v2.c) {
-        if (v1.N == v2.N) {
-            vector res(v1.N, v1.c);
+Vector operator + (const Vector& v1, const Vector& v2) {
+    if (v1.c == v2.c && v1.N == v2.N) {
+            Vector res(v1.N, v1.c);
             for (int i = 0; i < v1.N; i++) {
                 res.array[i] = v1.array[i] + v2.array[i];
             }
             return res;
-        }
     }
-    return vector(1, 1);
-
+    throw "Unable to sum vectors!";
 }
 
-vector operator - (const vector& v, const float& f) {
+Vector operator - (const Vector& v, const float& f) {
     return v + (-f);
 }
 
-vector operator - (const vector& v) {
+Vector operator - (const Vector& v) {
     for (int i = 0; i < v.N; i++) {
         v.array[i] = -v.array[i];
     }
