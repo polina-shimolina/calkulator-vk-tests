@@ -98,3 +98,7 @@ Vector operator - (const Vector& v) {
     }
     return v;
 }
+
+Vector& operator+=(Vector& v1, const Vector& v2) {
+    return v1 = v1 + v2;
+}
