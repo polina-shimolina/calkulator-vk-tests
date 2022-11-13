@@ -1,0 +1,29 @@
+on: push
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    container: keberson/vk-gcc
+    steps:
+      - uses: actions/checkout@v2 
+      - run: python3 cpplint.py --extensions=cpp matrix/*.cpp headers/*.h
+      - run: cppcheck --error-exitcode=1 --enable=all --suppress=missingIncludeSystem matrix/ -I headers/
+  build:
+    runs-on: ubuntu-latest
+    container: keberson/vk-gcc
+    steps:
+    - uses: actions/checkout@v2 
+    - run: cmake .
+    - name: upload matrix
+      uses: actions/upload-artifact@v2
+      with:
+        path: test
+
+  test:
+    runs-on: ubuntu-latest
+    container: keberson/vk-gcc
+    needs: [build]
+    steps:
+      - uses: actions/upload-artifact@v2
+        with:
+          path: test
