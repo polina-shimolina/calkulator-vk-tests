@@ -11,22 +11,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container: keberson/vk-gcc
-    needs: [check]
     steps:
     - uses: actions/checkout@v2 
     - run: cmake .
-    - name: Upload matrix
+    - name: upload matrix
       uses: actions/upload-artifact@v2
       with:
-        path: matrix_calculator_test
-    - name: Upload vector
-      uses: actions/upload-artifact@v2
-      with:
-        path: vector_test
+        path: test
+
   test:
     runs-on: ubuntu-latest
     container: keberson/vk-gcc
     needs: [build]
     steps:
-      - uses: actions/checkout@v2 
-      - run: cmake . &&  cmake --build . &&  CTEST_OUTPUT_ON_FAILURE=TRUE cmake --build . --target test
+      - uses: actions/upload-artifact@v2
+        with:
+          path: test
